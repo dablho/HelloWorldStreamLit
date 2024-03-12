@@ -2,3 +2,4 @@ pdfplumber
 nltk
 matplotlib
 wordcloud
+requests
