@@ -99,7 +99,7 @@ if text:
   plt.xlabel('Palavras')
   plt.ylabel('Frequência')
   plt.title('Palavras mais frequentes no texto inserido')
-  plt.xticks(rotation=2)
+  plt.xticks(rotation=45)
   st.pyplot(plt.gcf())
 
   wordcloud = wd.WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(frequencies=frequencia)
