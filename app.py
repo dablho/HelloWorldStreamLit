@@ -5,6 +5,7 @@ from collections import Counter
 import re
 import nltk
 import matplotlib.pyplot as plt
+import wordcloud as wd
 
 st.markdown('''
   # *Olá, seja bem-vindo à Análise Estatística de um texto*.
@@ -57,6 +58,12 @@ if arquivo:
   plt.xticks(rotation=45)
   st.pyplot(plt.gcf())
 
+  wordcloud = wd.WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(frequencies=frequencia)
+
+# Exiba a nuvem de palavras na interface do Streamlit
+  st.image(wordcloud.to_array(), caption='Nuvem de Palavras', use_column_width=True)
+
+
 st.markdown('''
   ### Escreva um texto:
   '''
@@ -94,6 +101,10 @@ if text:
   plt.title('Palavras mais frequentes no texto inserido')
   plt.xticks(rotation=2)
   st.pyplot(plt.gcf())
+
+  wordcloud = wd.WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(frequencies=frequencia)
+
+  st.image(wordcloud.to_array(), caption='Nuvem de Palavras', use_column_width=True)
 
 st.markdown('''
   ### Link de uma página:
