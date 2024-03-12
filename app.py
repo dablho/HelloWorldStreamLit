@@ -69,7 +69,7 @@ st.markdown('''
   '''
 )
 
-text = st.text_area('Escreva um texto:', max_chars=3200)
+text = st.text_area('Escreva um texto:', max_chars=7000)
 
 if text:
   text_limpo = re.sub(r'\W+', ' ', text.lower())
