@@ -6,6 +6,7 @@ import re
 import nltk
 import matplotlib.pyplot as plt
 import wordcloud as wd
+import requests
 
 st.markdown('''
   # *Olá, seja bem-vindo à Análise Estatística de um texto*.
@@ -111,3 +112,54 @@ st.markdown('''
   '''
 )
 
+link_pagina = st.text_input('Insira o link da página:', '')
+
+def baixar_conteudo_pagina(link):
+    try:
+        response = requests.get(link)
+        if response.status_code == 200:
+            return response.text
+        else:
+            st.error(f"Não foi possível baixar o conteúdo da página. Código de status: {response.status_code}")
+            return None
+    except Exception as e:
+        st.error(f"Ocorreu um erro ao tentar baixar o conteúdo da página: {e}")
+        return None
+    
+if link_pagina:
+    texto_pagina = baixar_conteudo_pagina(link_pagina)
+    
+    if texto_pagina:
+        texto_limpo_pagina = re.sub(r'\W+', ' ', texto_pagina.lower())
+        palavras_pagina = texto_limpo_pagina.split()
+
+        nltk.download('stopwords')
+        stopwords = nltk.corpus.stopwords.words('portuguese')
+
+        palavras_pagina_sem_stopwords = [palavra for palavra in palavras_pagina if palavra not in stopwords and len(palavra) > 2]
+
+        frequencia_pagina = Counter(palavras_pagina_sem_stopwords)
+
+        total_palavras_pagina = len(palavras_pagina_sem_stopwords)
+
+        if total_palavras_pagina == 1:
+            st.write(f'{total_palavras_pagina} palavra encontrada na página')
+        elif total_palavras_pagina > 1:
+            st.write(f'{total_palavras_pagina} palavras encontradas na página')
+
+        mais_comuns_pagina = frequencia_pagina.most_common(num_palavras)
+        st.write(f'As {num_palavras} palavras mais frequentes na página são:')
+        st.write(mais_comuns_pagina)
+
+        plt.figure(figsize=(15, 5))
+        palavras_pagina, contagens_pagina = zip(*mais_comuns_pagina)
+        plt.bar(palavras_pagina, contagens_pagina)
+        plt.xlabel('Palavras')
+        plt.ylabel('Frequência')
+        plt.title('Palavras mais frequentes na página')
+        plt.xticks(rotation=45)
+        st.pyplot(plt.gcf())
+
+        wordcloud_pagina = wd.WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(frequencies=frequencia_pagina)
+
+        st.image(wordcloud_pagina.to_array(), caption='Nuvem de Palavras na Página', use_column_width=True)
