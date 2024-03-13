@@ -10,7 +10,7 @@ import requests
 
 st.markdown('''
   # *Olá, seja bem-vindo à Análise Estatística de um texto*.
-
+  
   ### Importe um arquivo de texto:
   '''
 )
@@ -94,18 +94,24 @@ if text:
   st.write(f'As {num_palavras} palavras mais frequentes no texto inserido são:')
   st.write(mais_comuns)
 
-  plt.figure(figsize=(15, 5))
-  palavras, contagens = zip(*mais_comuns)
-  plt.bar(palavras, contagens)
-  plt.xlabel('Palavras')
-  plt.ylabel('Frequência')
-  plt.title('Palavras mais frequentes no texto inserido')
-  plt.xticks(rotation=45)
-  st.pyplot(plt.gcf())
 
-  wordcloud = wd.WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(frequencies=frequencia)
+  if mais_comuns:
+    palavras, contagens = zip(*mais_comuns)
+    plt.figure(figsize=(15, 5))
+    plt.bar(palavras, contagens)
+    plt.xlabel('Palavras')
+    plt.ylabel('Frequência')
+    plt.title('Palavras mais frequentes no texto inserido')
+    plt.xticks(rotation=45)
+    st.pyplot(plt.gcf())
+  else:
+    st.warning('Esta palavra é uma stopword.')
 
-  st.image(wordcloud.to_array(), caption='Nuvem de Palavras', use_column_width=True)
+  if frequencia:
+    wordcloud = wd.WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(frequencies=frequencia)
+    st.image(wordcloud.to_array(), caption='Nuvem de Palavras', use_column_width=True)
+  else:
+    pass
 
 st.markdown('''
   ### Link de uma página:
@@ -163,3 +169,9 @@ if link_pagina:
         wordcloud_pagina = wd.WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(frequencies=frequencia_pagina)
 
         st.image(wordcloud_pagina.to_array(), caption='Nuvem de Palavras na Página', use_column_width=True)
+
+st.markdown('''
+  ###
+  ###### Projeto feito por William Mattede
+  '''
+)
