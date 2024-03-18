@@ -47,8 +47,14 @@ if arquivo:
   frequencia = Counter(palavra_sem_stopword)
 
   mais_comuns = frequencia.most_common(num_palavras)
-  st.write(f'As {num_palavras} palavras mais frequentes no PDF são:')
-  st.write(mais_comuns)
+  st.write(f'As {num_palavras} palavras mais frequentes no texto pdf são:')
+  col1, col2 = st.columns(2)
+
+  for i, (palavra, contagem) in enumerate(mais_comuns):
+    if i < num_palavras // 2:
+        col1.write(f"{i+1}: {palavra} - {contagem}")
+    else:
+        col2.write(f"{i+1}: {palavra} - {contagem}")
 
   plt.figure(figsize=(15, 5))
   palavras, contagens = zip(*mais_comuns)
@@ -61,7 +67,6 @@ if arquivo:
 
   wordcloud = wd.WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(frequencies=frequencia)
 
-# Exiba a nuvem de palavras na interface do Streamlit
   st.image(wordcloud.to_array(), caption='Nuvem de Palavras', use_column_width=True)
 
 
@@ -92,7 +97,15 @@ if text:
 
   mais_comuns = frequencia.most_common(num_palavras)
   st.write(f'As {num_palavras} palavras mais frequentes no texto inserido são:')
-  st.write(mais_comuns)
+  col1, col2 = st.columns(2)
+
+  for i, (palavra, contagem) in enumerate(mais_comuns):
+    if i < num_palavras // 2:
+        col1.write(f"{i+1}: {palavra} - {contagem}")
+    else:
+        col2.write(f"{i+1}: {palavra} - {contagem}")
+
+
 
 
   if mais_comuns:
@@ -154,8 +167,14 @@ if link_pagina:
             st.write(f'{total_palavras_pagina} palavras encontradas na página')
 
         mais_comuns_pagina = frequencia_pagina.most_common(num_palavras)
-        st.write(f'As {num_palavras} palavras mais frequentes na página são:')
-        st.write(mais_comuns_pagina)
+        st.write(f'As {num_palavras} palavras mais frequentes no texto inserido são:')
+        col1, col2 = st.columns(2)
+
+        for i, (palavra, contagem) in enumerate(mais_comuns_pagina):
+          if i < num_palavras // 2:
+            col1.write(f"{i+1}: {palavra} - {contagem}")
+          else:
+            col2.write(f"{i+1}: {palavra} - {contagem}")
 
         plt.figure(figsize=(15, 5))
         palavras_pagina, contagens_pagina = zip(*mais_comuns_pagina)
